@@ -7,8 +7,7 @@ using System.Threading.Tasks;
 
 namespace Romanov_Rustam_ISEbd_21
 {
-
-    class Airplane : Plane
+class Airplane : Plane
     {
         public bool Radar { private set; get; }
         public Color DopColor { private set; get; }
