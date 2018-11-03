@@ -12,7 +12,7 @@ namespace Romanov_Rustam_ISEbd_21
 {
     public partial class FormPlane : Form
     {
-        private Airplane airplane;
+        private ITransport plane;
 
         public FormPlane()
         {
@@ -23,15 +23,22 @@ namespace Romanov_Rustam_ISEbd_21
         {
             Bitmap bmp = new Bitmap(pictureBoxAirplane.Width, pictureBoxAirplane.Height);
             Graphics G = Graphics.FromImage(bmp);
-            airplane.DrawAirplane(G);
+            plane.DrawAirplane(G);
             pictureBoxAirplane.Image = bmp;
         }
 
         private void buttonCreate_Click(object sender, EventArgs e)
         {
             Random rnd = new Random();
-            airplane = new Airplane(50, 10, Color.Gray, Color.Black);
-            airplane.SetPosition(200, 200, pictureBoxAirplane.Width, pictureBoxAirplane.Height);
+            plane = new Airplane(50, 10, Color.Gray, Color.Blue, true);
+            plane.SetPosition(200, 200, pictureBoxAirplane.Width, pictureBoxAirplane.Height);
+            Draw();
+        }
+        private void buttonCreatePlane_Click(object sender, EventArgs e)
+        {
+            Random rnd = new Random();
+            plane = new Plane(50, 10, Color.Gray);
+            plane.SetPosition(200, 200, pictureBoxAirplane.Width, pictureBoxAirplane.Height);
             Draw();
         }
         private void buttonMove_Click(object sender, EventArgs e)
@@ -40,16 +47,16 @@ namespace Romanov_Rustam_ISEbd_21
             switch (name)
             {
                 case "buttonUp":
-                    airplane.MoveAirplane(Direction.Up);
+                    plane.MoveAirplane(Direction.Up);
                     break;
                 case "buttonDown":
-                    airplane.MoveAirplane(Direction.Down);
+                    plane.MoveAirplane(Direction.Down);
                     break;
                 case "buttonLeft":
-                    airplane.MoveAirplane(Direction.Left);
+                    plane.MoveAirplane(Direction.Left);
                     break;
                 case "buttonRight":
-                    airplane.MoveAirplane(Direction.Right);
+                    plane.MoveAirplane(Direction.Right);
                     break;
             }
             Draw();
