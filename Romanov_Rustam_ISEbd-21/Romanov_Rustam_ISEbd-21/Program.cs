@@ -16,7 +16,7 @@ namespace Romanov_Rustam_ISEbd_21
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FormPlane());
+            Application.Run(new FormParking());
         }
     }
 }
