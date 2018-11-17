@@ -38,6 +38,7 @@
             this.pictureBoxParking = new System.Windows.Forms.PictureBox();
             this.listBoxLevel = new System.Windows.Forms.ListBox();
             this.label2 = new System.Windows.Forms.Label();
+            this.button4 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxTakePlane)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxParking)).BeginInit();
@@ -92,9 +93,9 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(1118, 312);
+            this.button2.Location = new System.Drawing.Point(1242, 180);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(111, 53);
+            this.button2.Size = new System.Drawing.Size(10, 53);
             this.button2.TabIndex = 6;
             this.button2.Text = "Parking Radar Plane";
             this.button2.UseVisualStyleBackColor = true;
@@ -102,9 +103,9 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(1118, 235);
+            this.button1.Location = new System.Drawing.Point(1089, 182);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(111, 45);
+            this.button1.Size = new System.Drawing.Size(10, 51);
             this.button1.TabIndex = 5;
             this.button1.Text = "Parking Plane";
             this.button1.UseVisualStyleBackColor = true;
@@ -136,11 +137,22 @@
             this.label2.TabIndex = 9;
             this.label2.Text = "Airport Level\'s";
             // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(1118, 184);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(108, 47);
+            this.button4.TabIndex = 10;
+            this.button4.Text = "Order Plane";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.buttonSetAirPlane_Click);
+            // 
             // FormParking
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1264, 811);
+            this.Controls.Add(this.button4);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.listBoxLevel);
             this.Controls.Add(this.groupBox1);
@@ -170,5 +182,6 @@
         private System.Windows.Forms.PictureBox pictureBoxParking;
         private System.Windows.Forms.ListBox listBoxLevel;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button button4;
     }
 }

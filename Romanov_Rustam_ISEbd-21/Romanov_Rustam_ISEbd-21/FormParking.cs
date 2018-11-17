@@ -16,6 +16,8 @@ namespace Romanov_Rustam_ISEbd_21
         /// Объект от класса многоуровневой парковки
         /// </summary>
         MultiLevelParking parking;
+        FormPlaneConfig form;
+
         /// <summary>
         /// Количество уровней-парковок
         /// </summary>
@@ -130,6 +132,32 @@ namespace Romanov_Rustam_ISEbd_21
         private void listBoxLevel_SelectedIndexChanged(object sender, EventArgs e)
         {
             Draw();
+        }
+
+        private void buttonSetAirPlane_Click(object sender, EventArgs e)
+        {
+            form = new FormPlaneConfig();
+            form.AddEvent(AddPlane);
+            form.Show();
+        }
+        /// <summary>
+        /// Метод добавления машины
+        /// </summary>
+        /// <param name="car"></param>
+        private void AddPlane(ITransport plane)
+        {
+            if (plane != null && listBoxLevel.SelectedIndex > -1)
+            {
+                int place = parking[listBoxLevel.SelectedIndex] + plane;
+                if (place > -1)
+                {
+                    Draw();
+                }
+                else
+                {
+                    MessageBox.Show("Самолёт не удалось поставить");
+                }
+            }
         }
     }
 }

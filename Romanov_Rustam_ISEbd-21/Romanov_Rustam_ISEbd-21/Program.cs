@@ -6,6 +6,9 @@ using System.Windows.Forms;
 
 namespace Romanov_Rustam_ISEbd_21
 {
+    public delegate void planeDelegate(ITransport plane);
+
+
     static class Program
     {
         /// <summary>
