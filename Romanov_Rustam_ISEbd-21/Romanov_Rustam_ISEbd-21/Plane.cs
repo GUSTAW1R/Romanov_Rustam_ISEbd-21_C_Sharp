@@ -10,13 +10,13 @@ namespace Romanov_Rustam_ISEbd_21
     public class Plane : Vehicle
     {
         protected const int AirplaneWidth = 100;
-        protected const int AirplaneHeight = 60;
+        protected const int AirplaneHeight = 80;
 
         public Plane(int maxSpeed, int weight, Color mainColor)
         {
             MaxSpeed = maxSpeed;
             Weight = weight;
-            MainColor = MainColor;
+            MainColor = mainColor;
         }
 
         public override void MoveAirplane(Direction direction)
@@ -56,11 +56,9 @@ namespace Romanov_Rustam_ISEbd_21
         }
         public override void DrawAirplane(Graphics G)
         {
-            Brush B_fon = new SolidBrush(Color.AliceBlue);
-            G.FillRectangle(B_fon, 0, 0, 1920, 1080);
             Pen P = new Pen(Color.Black, 2);
             Brush B_T_Gray = new SolidBrush(Color.SlateGray);
-            Brush B_S_Gray = new SolidBrush(Color.Gray);
+            Brush B_S_Gray = new SolidBrush(MainColor);
             Brush B_Black = new SolidBrush(Color.Black);
             Brush B_blue = new SolidBrush(Color.Blue);
             Point point1 = new Point(_startPosX, _startPosY);
@@ -70,8 +68,8 @@ namespace Romanov_Rustam_ISEbd_21
             Point point5 = new Point(_startPosX + 130, _startPosY + 30);
             Point point6 = new Point(_startPosX + 130, _startPosY + 10);
             Point point7 = new Point(_startPosX + 120, _startPosY);
-            Point point8 = new Point(_startPosX - 20, _startPosY - 30);
-            Point point9 = new Point(_startPosX, _startPosY - 30);
+            Point point8 = new Point(_startPosX - 20, _startPosY - 20);
+            Point point9 = new Point(_startPosX, _startPosY - 20);
             Point point10 = new Point(_startPosX + 20, _startPosY);
             Point point11 = new Point(_startPosX + 40, _startPosY);
             Point point12 = new Point(_startPosX + 20, _startPosY + 30);
@@ -98,8 +96,9 @@ namespace Romanov_Rustam_ISEbd_21
             G.FillPolygon(B_T_Gray, Nabor3);
             G.FillPolygon(B_blue, Nabor4);
             G.DrawLines(P, Obshii_nabor);
+            G.DrawLine(P, _startPosX + 100, _startPosY + 10, _startPosX + 130, _startPosY + 10);
             //G.DrawLine(P, _startPosX + 40, _startPosY - 10, _startPosX + 70, _startPosY - 10);
-            G.DrawLine(P, _startPosX - 30, _startPosY - 30, _startPosX + 10, _startPosY - 30);
+            G.DrawLine(P, _startPosX - 30, _startPosY - 20, _startPosX + 10, _startPosY - 20);
         }
     }
 }
