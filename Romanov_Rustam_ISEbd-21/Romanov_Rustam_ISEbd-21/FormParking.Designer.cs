@@ -36,6 +36,8 @@
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.pictureBoxParking = new System.Windows.Forms.PictureBox();
+            this.listBoxLevel = new System.Windows.Forms.ListBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxTakePlane)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxParking)).BeginInit();
@@ -90,7 +92,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(1118, 99);
+            this.button2.Location = new System.Drawing.Point(1118, 312);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(111, 53);
             this.button2.TabIndex = 6;
@@ -100,7 +102,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(1118, 26);
+            this.button1.Location = new System.Drawing.Point(1118, 235);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(111, 45);
             this.button1.TabIndex = 5;
@@ -116,11 +118,31 @@
             this.pictureBoxParking.TabIndex = 4;
             this.pictureBoxParking.TabStop = false;
             // 
+            // listBoxLevel
+            // 
+            this.listBoxLevel.FormattingEnabled = true;
+            this.listBoxLevel.Location = new System.Drawing.Point(1089, 40);
+            this.listBoxLevel.Name = "listBoxLevel";
+            this.listBoxLevel.Size = new System.Drawing.Size(163, 121);
+            this.listBoxLevel.TabIndex = 8;
+            this.listBoxLevel.SelectedIndexChanged += new System.EventHandler(this.listBoxLevel_SelectedIndexChanged);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(1136, 24);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(73, 13);
+            this.label2.TabIndex = 9;
+            this.label2.Text = "Airport Level\'s";
+            // 
             // FormParking
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1264, 811);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.listBoxLevel);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
@@ -132,6 +154,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxTakePlane)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxParking)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -145,5 +168,7 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.PictureBox pictureBoxParking;
+        private System.Windows.Forms.ListBox listBoxLevel;
+        private System.Windows.Forms.Label label2;
     }
 }
