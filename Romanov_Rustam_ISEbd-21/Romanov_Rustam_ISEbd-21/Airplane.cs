@@ -31,5 +31,9 @@ namespace Romanov_Rustam_ISEbd_21
                 G.DrawLine(P, _startPosX + 40, _startPosY - 10, _startPosX + 70, _startPosY - 10);
             }
         }
+        public void SetDopColor(Color color)
+        {
+            DopColor = color;
+        }
     }
 }

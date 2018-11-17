@@ -12,5 +12,6 @@ namespace Romanov_Rustam_ISEbd_21
         void SetPosition(int x, int y, int width, int height);
         void MoveAirplane(Direction direction);
         void DrawAirplane(Graphics G);
+        void SetMainColor(Color color);
     }
 }
