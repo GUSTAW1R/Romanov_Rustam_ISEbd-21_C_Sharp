@@ -18,6 +18,18 @@ namespace Romanov_Rustam_ISEbd_21
             Radar = radar;
             DopColor = secondColor;
         }
+        public Airplane(string info) : base(info)
+        {
+            string[] strs = info.Split(';');
+            if (strs.Length == 5)
+            {
+                MaxSpeed = Convert.ToInt32(strs[0]);
+                Weight = Convert.ToInt32(strs[1]);
+                MainColor = Color.FromName(strs[2]);
+                DopColor = Color.FromName(strs[3]);
+                Radar = Convert.ToBoolean(strs[4]);
+            }
+        }
 
         public override void DrawAirplane(Graphics G)
         {
@@ -34,6 +46,11 @@ namespace Romanov_Rustam_ISEbd_21
         public void SetDopColor(Color color)
         {
             DopColor = color;
+        }
+
+        public override string ToString()
+        {
+            return base.ToString() + ";" + DopColor.Name + ";" + Radar;
         }
     }
 }
