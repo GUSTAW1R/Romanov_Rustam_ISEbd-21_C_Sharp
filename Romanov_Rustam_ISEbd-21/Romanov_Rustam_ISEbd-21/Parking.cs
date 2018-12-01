@@ -12,7 +12,11 @@ namespace Romanov_Rustam_ISEbd_21
         /// <summary>
         /// Массив объектов, которые храним
         /// </summary>
-        private T[] _places;
+        private Dictionary<int, T> _places;
+        /// <summary>
+        /// Максимальное количество мест на парковке
+        /// </summary>
+        private int _maxCount;
         /// <summary>
         /// Ширина окна отрисовки
         /// </summary>
@@ -37,13 +41,10 @@ namespace Romanov_Rustam_ISEbd_21
         /// <param name="pictureHeight">Рамзер парковки - высота</param>
         public Parking(int sizes, int pictureWidth, int pictureHeight)
         {
-            _places = new T[sizes];
+            _maxCount = sizes;
+            _places = new Dictionary<int, T>();
             PictureWidth = pictureWidth;
             PictureHeight = pictureHeight;
-            for (int i = 0; i < _places.Length; i++)
-            {
-                _places[i] = null;
-            }
         }
         /// <summary>
         /// Перегрузка оператора сложения
@@ -54,11 +55,15 @@ namespace Romanov_Rustam_ISEbd_21
         /// <returns></returns>
         public static int operator +(Parking<T> p, T plane)
         {
-            for (int i = 0; i < p._places.Length; i++)
+            if (p._places.Count == p._maxCount)
+            {
+                return -1;
+            }
+            for (int i = 0; i < p._maxCount; i++)
             {
                 if (p.CheckFreePlace(i))
                 {
-                    p._places[i] = plane;
+                    p._places.Add(i, plane);
                     p._places[i].SetPosition(5 + i / 5 * p._placeSizeWidth + 35,
                     i % 5 * p._placeSizeHeight + 30, p.PictureWidth, p.PictureHeight);
                     return i;
@@ -75,15 +80,11 @@ namespace Romanov_Rustam_ISEbd_21
         /// <returns></returns>
         public static T operator -(Parking<T> p, int index)
         {
-            if (index < 0 || index > p._places.Length)
-            {
-                return null;
-            }
             if (!p.CheckFreePlace(index))
             {
-                T plane = p._places[index];
-                p._places[index] = null;
-                return plane;
+                T car = p._places[index];
+                p._places.Remove(index);
+                return car;
             }
             return null;
         }
@@ -94,7 +95,7 @@ namespace Romanov_Rustam_ISEbd_21
         /// <returns></returns>
         private bool CheckFreePlace(int index)
         {
-            return _places[index] == null;
+            return !_places.ContainsKey(index);
         }
         /// <summary>
         /// Метод отрисовки парковки
@@ -103,12 +104,10 @@ namespace Romanov_Rustam_ISEbd_21
         public void Draw(Graphics g)
         {
             DrawMarking(g);
-            for (int i = 0; i < _places.Length; i++)
+            var keys = _places.Keys.ToList();
+            for (int i = 0; i < keys.Count; i++)
             {
-                if (!CheckFreePlace(i))
-                {//если место не пустое
-                    _places[i].DrawAirplane(g);
-                }
+                _places[keys[i]].DrawAirplane(g);
             }
         }
         /// <summary>
@@ -119,15 +118,34 @@ namespace Romanov_Rustam_ISEbd_21
         {
             Pen pen = new Pen(Color.Black, 5);
             //границы праковки
-            g.DrawRectangle(pen, 1, 1, (_places.Length / 5) * _placeSizeWidth + 200, 780);
-            for (int i = 0; i < _places.Length / 5 + 1; i++)
+            g.DrawRectangle(pen, 1, 1, (_maxCount / 5) * _placeSizeWidth, 550);
+            for (int i = 0; i < _maxCount / 5 + 1; i++)
             {//отрисовываем, по 5 мест на линии
-                for (int j = 0; j < 10; ++j)
+                for (int j = 0; j < 7; ++j)
                 {//линия рамзетки места
                     g.DrawLine(pen, i * _placeSizeWidth, j * _placeSizeHeight,
                     i * _placeSizeWidth + 170, j * _placeSizeHeight);
                 }
 
+            }
+        }
+        public T this[int ind]
+        {
+            get
+            {
+                if (_places.ContainsKey(ind))
+                {
+                    return _places[ind];
+                }
+                return null;
+            }
+            set
+            {
+                if (CheckFreePlace(ind))
+                {
+                    _places.Add(ind, value);
+                    _places[ind].SetPosition(5 + ind / 5 * _placeSizeWidth + 35, ind % 5 * _placeSizeHeight + 30, PictureWidth, PictureHeight);
+                }
             }
         }
     }

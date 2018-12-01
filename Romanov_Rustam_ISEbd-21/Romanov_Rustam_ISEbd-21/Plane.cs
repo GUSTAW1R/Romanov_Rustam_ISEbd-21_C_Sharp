@@ -19,6 +19,17 @@ namespace Romanov_Rustam_ISEbd_21
             MainColor = mainColor;
         }
 
+        public Plane(string info)
+        {
+            string[] strs = info.Split(';');
+            if (strs.Length == 3)
+            {
+                MaxSpeed = Convert.ToInt32(strs[0]);
+                Weight = Convert.ToInt32(strs[1]);
+                MainColor = Color.FromName(strs[2]);
+            }
+        }
+
         public override void MoveAirplane(Direction direction)
         {
             int step = MaxSpeed + 10;
@@ -99,6 +110,11 @@ namespace Romanov_Rustam_ISEbd_21
             G.DrawLine(P, _startPosX + 100, _startPosY + 10, _startPosX + 130, _startPosY + 10);
             //G.DrawLine(P, _startPosX + 40, _startPosY - 10, _startPosX + 70, _startPosY - 10);
             G.DrawLine(P, _startPosX - 30, _startPosY - 20, _startPosX + 10, _startPosY - 20);
+        }
+
+        public override string ToString()
+        {
+            return MaxSpeed + ";" + Weight + ";" + MainColor.Name;
         }
     }
 }
