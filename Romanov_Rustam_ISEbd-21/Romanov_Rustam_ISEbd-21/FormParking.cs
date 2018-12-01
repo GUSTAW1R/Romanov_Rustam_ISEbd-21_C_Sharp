@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using NLog;
 
 namespace Romanov_Rustam_ISEbd_21
 {
@@ -17,7 +18,7 @@ namespace Romanov_Rustam_ISEbd_21
         /// </summary>
         MultiLevelParking parking;
         FormPlaneConfig form;
-
+        private Logger logger;
         /// <summary>
         /// Количество уровней-парковок
         /// </summary>
@@ -25,6 +26,7 @@ namespace Romanov_Rustam_ISEbd_21
         public FormParking()
         {
             InitializeComponent();
+            logger = LogManager.GetCurrentClassLogger();
             parking = new MultiLevelParking(countLevel, pictureBoxParking.Width, pictureBoxParking.Height);
             //заполнение listBox
             for (int i = 0; i < countLevel; i++)
@@ -105,22 +107,27 @@ namespace Romanov_Rustam_ISEbd_21
             {
                 if (maskedTextBox.Text != "")
                 {
-                    var plane = parking[listBoxLevel.SelectedIndex] - Convert.ToInt32(maskedTextBox.Text);
-                    if (plane != null)
+                    try
                     {
-                        Bitmap bmp = new Bitmap(pictureBoxTakePlane.Width,
-                        pictureBoxTakePlane.Height);
+                        var plane = parking[listBoxLevel.SelectedIndex] - Convert.ToInt32(maskedTextBox.Text);
+                        Bitmap bmp = new Bitmap(pictureBoxTakePlane.Width, pictureBoxTakePlane.Height);
                         Graphics gr = Graphics.FromImage(bmp);
                         plane.SetPosition(35, 30, pictureBoxTakePlane.Width, pictureBoxTakePlane.Height);
                         plane.DrawAirplane(gr);
                         pictureBoxTakePlane.Image = bmp;
+                        logger.Info("Изъят самолёт " + plane.ToString() + " с места " + maskedTextBox.Text);
+                        Draw();
                     }
-                    else
+                    catch (ParkingNotFoundException ex)
                     {
+                        MessageBox.Show(ex.Message, "Не найдено", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         Bitmap bmp = new Bitmap(pictureBoxTakePlane.Width, pictureBoxTakePlane.Height);
                         pictureBoxTakePlane.Image = bmp;
                     }
-                    Draw();
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message, "Неизвестная ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
             }
         }
@@ -148,28 +155,35 @@ namespace Romanov_Rustam_ISEbd_21
         {
             if (plane != null && listBoxLevel.SelectedIndex > -1)
             {
-                int place = parking[listBoxLevel.SelectedIndex] + plane;
-                if (place > -1)
+                try
                 {
+                    int place = parking[listBoxLevel.SelectedIndex] + plane;
+                    logger.Info("Добавлен самолёт " + plane.ToString() + " на место " + place);
                     Draw();
                 }
-                else
+                catch (ParkingOverflowException ex)
                 {
-                    MessageBox.Show("Самолёт не удалось поставить");
+                    MessageBox.Show(ex.Message, "Переполнение", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Неизвестная ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
         private void сохранитьToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (saveFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
             {
-                if (parking.SaveData(saveFileDialog1.FileName))
+                try
                 {
+                    parking.SaveData(saveFileDialog1.FileName);
                     MessageBox.Show("Сохранение прошло успешно", "Результат", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    logger.Info("Сохранено в файл " + saveFileDialog1.FileName);
                 }
-                else
+                catch (Exception ex)
                 {
-                    MessageBox.Show("Не сохранилось", "Результат", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(ex.Message, "Неизвестная ошибка при сохранении", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
@@ -180,15 +194,21 @@ namespace Romanov_Rustam_ISEbd_21
         /// <param name="e"></param>
         private void загрузитьToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (openFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
-                if (parking.LoadData(openFileDialog1.FileName))
+                try
                 {
+                    parking.LoadData(openFileDialog1.FileName);
                     MessageBox.Show("Загрузили", "Результат", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    logger.Info("Загружено из файла " + openFileDialog1.FileName);
                 }
-                else
+                catch (ParkingOccupiedPlaceException ex)
                 {
-                    MessageBox.Show("Не загрузили", "Результат", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(ex.Message, "Занятое место", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Неизвестная ошибка при сохранении", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 Draw();
             }

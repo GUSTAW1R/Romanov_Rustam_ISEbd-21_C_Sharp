@@ -72,22 +72,26 @@ namespace Romanov_Rustam_ISEbd_21
                         WriteToFile("Level" + Environment.NewLine, fs);
                         for (int i = 0; i < countPlaces; i++)
                         {
-                            var plane = level[i];
-                            if (plane != null)
+                            try
                             {
-                                //если место не пустое
-                                //Записываем тип мшаины
-                                if (plane.GetType().Name == "Plane")
+                                var plane = level[i];
+                                if (plane != null)
                                 {
-                                    WriteToFile(i + ":Plane:", fs);
+                                    //если место не пустое
+                                    //Записываем тип мшаины
+                                    if (plane.GetType().Name == "Plane")
+                                    {
+                                        WriteToFile(i + ":Plane:", fs);
+                                    }
+                                    if (plane.GetType().Name == "Airplane")
+                                    {
+                                        WriteToFile(i + ":Airplane:", fs);
+                                    }
+                                    //Записываемые параметры
+                                    WriteToFile(plane + Environment.NewLine, fs);
                                 }
-                                if (plane.GetType().Name == "Airplane")
-                                {
-                                    WriteToFile(i + ":Airplane:", fs);
-                                }
-                                //Записываемые параметры
-                                WriteToFile(plane + Environment.NewLine, fs);
                             }
+                            finally { }
                         }
                     }
                 }
