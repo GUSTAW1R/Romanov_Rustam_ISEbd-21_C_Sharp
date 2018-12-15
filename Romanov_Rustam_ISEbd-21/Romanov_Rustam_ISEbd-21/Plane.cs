@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Romanov_Rustam_ISEbd_21
 {
-    public class Plane : Vehicle
+    public class Plane : Vehicle, IComparable<Plane>, IEquatable<Plane>
     {
         protected const int AirplaneWidth = 100;
         protected const int AirplaneHeight = 80;
@@ -115,6 +115,71 @@ namespace Romanov_Rustam_ISEbd_21
         public override string ToString()
         {
             return MaxSpeed + ";" + Weight + ";" + MainColor.Name;
+        }
+
+        public int CompareTo(Plane other)
+        {
+            if (other == null)
+            {
+                return 1;
+            }
+            if (MaxSpeed != other.MaxSpeed)
+            {
+                return MaxSpeed.CompareTo(other.MaxSpeed);
+            }
+            if (Weight != other.Weight)
+            {
+                return Weight.CompareTo(other.Weight);
+            }
+            if (MainColor != other.MainColor)
+            {
+                MainColor.Name.CompareTo(other.MainColor.Name);
+            }
+            return 0;
+        }
+        public bool Equals(Plane other)
+        {
+            if (other == null)
+            {
+                return false;
+            }
+            if (MaxSpeed != other.MaxSpeed)
+            {
+                return false;
+            }
+            if (Weight != other.Weight)
+            {
+                return false;
+            }
+            if (MainColor != other.MainColor)
+            {
+                return false;
+            }
+            return true;
+        }
+        public override bool Equals(Object obj)
+        {
+            if (obj == null)
+            {
+                return false;
+            }
+            Plane planeObj = obj as Plane;
+            if (planeObj == null)
+            {
+                return false;
+            }
+            else
+            {
+                return Equals(planeObj);
+            }
+        }
+        /// <summary>
+        /// Перегрузка метода от object
+        /// </summary>
+        /// <returns></returns>
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
     }
 }
