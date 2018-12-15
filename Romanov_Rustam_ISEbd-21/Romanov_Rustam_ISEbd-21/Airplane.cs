@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Romanov_Rustam_ISEbd_21
 {
 
-    class Airplane : Plane
+    class Airplane : Plane, IComparable<Airplane>, IEquatable<Airplane>
     {
         public bool Radar { private set; get; }
         public Color DopColor { private set; get; }
@@ -51,6 +51,75 @@ namespace Romanov_Rustam_ISEbd_21
         public override string ToString()
         {
             return base.ToString() + ";" + DopColor.Name + ";" + Radar;
+        }
+
+        public int CompareTo(Airplane other)
+        {
+            var res = (this is Plane).CompareTo(other is Plane);
+            if (res != 0)
+            {
+                return res;
+            }
+            if (DopColor != other.DopColor)
+            {
+                DopColor.Name.CompareTo(other.DopColor.Name);
+            }
+            if (Radar != other.Radar)
+            {
+                return Radar.CompareTo(other.Radar);
+            }
+            return 0;
+        }
+        /// <summary>
+        /// Метод интерфейса IEquatable для класса SportCar
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
+        public bool Equals(Airplane other)
+        {
+            var res = (this as Plane).Equals(other as Plane);
+            if (!res)
+            {
+                return res;
+            }
+            if (DopColor != other.DopColor)
+            {
+                return false;
+            }
+            if (Radar != other.Radar)
+            {
+                return false;
+            }
+            return true;
+        }
+        /// <summary>
+        /// Перегрузка метода от object
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public override bool Equals(Object obj)
+        {
+            if (obj == null)
+            {
+                return false;
+            }
+            Airplane carObj = obj as Airplane;
+            if (carObj == null)
+            {
+                return false;
+            }
+            else
+            {
+                return Equals(carObj);
+            }
+        }
+        /// <summary>
+        /// Перегрузка метода от object
+        /// </summary>
+        /// <returns></returns>
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
     }
 }

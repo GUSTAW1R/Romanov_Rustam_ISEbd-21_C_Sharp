@@ -165,6 +165,11 @@ namespace Romanov_Rustam_ISEbd_21
                 {
                     MessageBox.Show(ex.Message, "Переполнение", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
+                catch (ParkingAlreadyHaveException ex)
+                {
+                    MessageBox.Show(ex.Message, "Дублирование", MessageBoxButtons.OK,
+                   MessageBoxIcon.Error);
+                }
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message, "Неизвестная ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -212,6 +217,12 @@ namespace Romanov_Rustam_ISEbd_21
                 }
                 Draw();
             }
+        }
+        private void buttonSort_Click(object sender, EventArgs e)
+        {
+            parking.Sort();
+            Draw();
+            logger.Info("Сортировка уровней");
         }
     }
 }

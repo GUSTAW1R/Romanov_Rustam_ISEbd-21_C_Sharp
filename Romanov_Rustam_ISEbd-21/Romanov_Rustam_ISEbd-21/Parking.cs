@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -7,7 +8,8 @@ using System.Threading.Tasks;
 
 namespace Romanov_Rustam_ISEbd_21
 {
-    public class Parking<T> where T : class, ITransport
+    public class Parking<T> : IEnumerator<T>, IEnumerable<T>, IComparable<Parking<T>>
+       where T : class, ITransport
     {
         /// <summary>
         /// Массив объектов, которые храним
@@ -33,6 +35,18 @@ namespace Romanov_Rustam_ISEbd_21
         /// Размер парковочного места (высота)
         /// </summary>
         private int _placeSizeHeight = 80;
+
+        private int _currentIndex;
+        /// <summary>
+        /// Получить порядковое место на парковке
+        /// </summary>
+        public int GetKey
+        {
+            get
+            {
+                return _places.Keys.ToList()[_currentIndex];
+            }
+        }
         /// <summary>
         /// Конструктор
         /// </summary>
@@ -43,6 +57,7 @@ namespace Romanov_Rustam_ISEbd_21
         {
             _maxCount = sizes;
             _places = new Dictionary<int, T>();
+            _currentIndex = -1;
             PictureWidth = pictureWidth;
             PictureHeight = pictureHeight;
         }
@@ -58,6 +73,10 @@ namespace Romanov_Rustam_ISEbd_21
             if (p._places.Count == p._maxCount)
             {
                 throw new ParkingOverflowException();
+            }
+            if (p._places.ContainsValue(plane))
+            {
+                throw new ParkingAlreadyHaveException();
             }
             for (int i = 0; i < p._maxCount; i++)
             {
@@ -104,10 +123,9 @@ namespace Romanov_Rustam_ISEbd_21
         public void Draw(Graphics g)
         {
             DrawMarking(g);
-            var keys = _places.Keys.ToList();
-            for (int i = 0; i < keys.Count; i++)
+            foreach (var plane in _places)
             {
-                _places[keys[i]].DrawAirplane(g);
+                plane.Value.DrawAirplane(g);
             }
         }
         /// <summary>
@@ -151,6 +169,111 @@ namespace Romanov_Rustam_ISEbd_21
                     throw new ParkingOccupiedPlaceException(ind);
                 }
             }
+        }
+        /// <summary>
+        /// Метод интерфейса IEnumerator для получения текущего элемента
+        /// </summary>
+        public T Current
+        {
+            get
+            {
+                return _places[_places.Keys.ToList()[_currentIndex]];
+            }
+        }
+        /// <summary>
+        /// Метод интерфейса IEnumerator для получения текущего элемента
+        /// </summary>
+        object IEnumerator.Current
+        {
+            get
+            {
+                return Current;
+            }
+        }
+        /// <summary>
+        /// Метод интерфейса IEnumerator, вызываемый при удалении объекта
+        /// </summary>
+        public void Dispose()
+        {
+            _places.Clear();
+        }
+        /// <summary>
+        /// Метод интерфейса IEnumerator для перехода к следующему элементу или началу коллекции
+        /// </summary>
+        /// <returns></returns>
+        public bool MoveNext()
+        {
+            if (_currentIndex + 1 >= _places.Count)
+            {
+                Reset();
+                return false;
+            }
+            _currentIndex++;
+            return true;
+        }
+        /// <summary>
+        /// Метод интерфейса IEnumerator для сброса и возврата к началу коллекции
+        /// </summary>
+        public void Reset()
+        {
+            _currentIndex = -1;
+        }
+        /// <summary>
+        /// Метод интерфейса IEnumerable
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerator<T> GetEnumerator()
+        {
+            return this;
+        }
+        /// <summary>
+        /// Метод интерфейса IEnumerable
+        /// </summary>
+        /// <returns></returns>
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+        /// <summary>
+        /// Метод интерфейса IComparable
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
+        public int CompareTo(Parking<T> other)
+        {
+            if (_places.Count > other._places.Count)
+            {
+                return -1;
+            }
+            else if (_places.Count < other._places.Count)
+            {
+                return 1;
+            }
+            else if (_places.Count > 0)
+            {
+                var thisKeys = _places.Keys.ToList();
+                var otherKeys = other._places.Keys.ToList();
+                for (int i = 0; i < _places.Count; ++i)
+                {
+                    if (_places[thisKeys[i]] is Plane && other._places[thisKeys[i]] is Airplane)
+                    {
+                        return 1;
+                    }
+                    if (_places[thisKeys[i]] is Airplane && other._places[thisKeys[i]] is Plane)
+                    {
+                        return -1;
+                    }
+                    if (_places[thisKeys[i]] is Plane && other._places[thisKeys[i]] is Plane)
+                    {
+                        return (_places[thisKeys[i]] is Plane).CompareTo(other._places[thisKeys[i]] is Plane);
+                    }
+                    if (_places[thisKeys[i]] is Airplane && other._places[thisKeys[i]] is Airplane)
+                    {
+                        return (_places[thisKeys[i]] is Airplane).CompareTo(other._places[thisKeys[i]] is Airplane);
+                    }
+                }
+            }
+            return 0;
         }
     }
 }
